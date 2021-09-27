@@ -1,0 +1,20 @@
+int dfs(Node* node, int k, int& count){
+    if(!node or count > k){
+        return 0;
+    }
+    int sum = dfs(node->left, k, count);
+    if(count >= k){
+        return sum;
+    }
+    sum += node->data;
+    count ++;
+    if(count >= k){
+        return sum;
+    }
+    return sum + dfs(node->right, k, count);
+}
+
+int sum(Node* root, int k) {
+    int count = 0;
+    return dfs(root, k, count);
+} 
