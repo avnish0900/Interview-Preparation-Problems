@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string longestNiceSubstring(string s) {
+        if(s.length() < 2){
+            return "";
+        }
+        set<char> ss;
+        for(char ch: s){
+            ss.insert(ch);
+        }
+        for(int i=0; i<s.length(); i++){
+            char ch1 = toupper(s[i]);
+            char ch2 = tolower(s[i]);
+            if(ss.find(ch1)!= ss.end() and ss.find(ch2)!=ss.end()){
+                continue;
+            }
+            string a = longestNiceSubstring(s.substr(0, i));
+            string b =longestNiceSubstring(s.substr(i+1));
+            return a.length() >= b.length() ? a : b;
+        }
+        return s;
+    }
+};
