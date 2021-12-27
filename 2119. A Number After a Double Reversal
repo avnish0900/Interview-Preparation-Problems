@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isSameAfterReversals(int num) {
+        string str = to_string(num);
+        int pos = -1;
+        for(int i=str.length()-1; i>=0; i--){
+            if(str[i] == '0'){
+                
+            }
+            else{
+                pos = i;
+                break;
+            }
+        }
+        
+        if(str.length() >= 2 and str[str.length()-1] == '0'){
+            return false;
+        }
+        return true;
+    }
+};
