@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool checkString(string s) {
+        int aa = -1;
+        int bb = -1;
+        for(int i=0; i<s.length(); i++){
+            if(s[i] == 'a'){
+                aa = i;
+            }
+            if(s[i] == 'b' and bb == -1){
+                bb = i;
+            }
+        }
+        if(bb!= -1){
+            if(aa < bb){
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+};
