@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int numPairsDivisibleBy60(vector<int>& time) {
+        int ans = 0;
+        vector<int> freq(61, 0);
+        for(int i: time){
+            int mod = i % 60;
+            if(mod == 0){
+                ans += freq[0];
+            }
+            else{
+                ans += freq[60 - mod];
+            }
+            freq[mod]++;
+        }
+        return ans;
+    }
+};
