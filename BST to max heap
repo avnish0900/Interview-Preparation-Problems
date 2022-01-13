@@ -1,0 +1,25 @@
+void dfs(Node* root, vector<int>& arr){
+        if(!root){
+            return ;
+        }
+        dfs(root->left, arr);
+        arr.push_back(root->data);
+        dfs(root->right, arr);
+    }
+  
+    void dfs2(Node* &root, vector<int>& arr, int &index){
+        if(!root){
+            return ;
+        }
+        dfs2(root->left, arr, index);
+        dfs2(root->right, arr, index);
+        root->data = arr[index++];
+        return ;
+    }
+  
+    void convertToMaxHeapUtil(Node* root){
+        vector<int> arr;
+        dfs(root, arr);
+        int index = 0;
+        dfs2(root, arr, index);
+    }   
