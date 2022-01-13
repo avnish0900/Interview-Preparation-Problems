@@ -1,0 +1,18 @@
+void dfs(string str, string s, vector<string>& ans){
+	    if(str.length() == 0){
+	        ans.push_back(s);
+	        return ;
+	    }
+	    for(int i=0; i<str.length(); i++){
+	        string lc = str.substr(0, i);
+	        string rc = str.substr(i+1);
+	        dfs(lc+rc, s+str[i], ans);
+	    }
+	}
+		vector<string>find_permutation(string S)
+		{
+		    vector<string> ans;
+		    dfs(S, "", ans);
+		    sort(ans.begin(), ans.end());
+		    return ans;
+		}
