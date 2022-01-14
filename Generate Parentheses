@@ -1,0 +1,22 @@
+void dfs(int n, int open, int close, string path, vector<string>& ans){
+        if(open+close >= 2*n){
+            if(open==close){
+                ans.push_back(path);
+            }
+            return ;
+        }
+        if(open > close){
+             char ch = ')';
+            dfs(n, open, close+1, path+ch, ans);
+        }
+        char ch = '(';
+        dfs(n, open+1, close, path+ch, ans);
+    }
+    vector<string> AllParenthesis(int n) {
+        vector<string> ans;
+        string path;
+        int open = 0;
+        int close = 0;
+        dfs(n, 0, 0, path, ans);
+        return ans;
+    }
