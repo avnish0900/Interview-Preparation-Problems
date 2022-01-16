@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int minMoves(int n, int mxd) {
+        int ans = 0;
+        while(n > 1){
+            if(n & 1){
+                n --;
+                ans++;
+            }
+            else{
+                if(mxd >= 1){
+                    n >>= 1;
+                    ans++;
+                    mxd--;
+                }
+                else{
+                    n--;
+                    ans++;
+                }
+            }
+            if(mxd == 0){
+                ans+=(n-1);
+                break;
+            }
+        }
+        return ans;
+    }
+};
