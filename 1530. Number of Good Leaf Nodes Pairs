@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> dfs(TreeNode* root, int distance, int& ans){
+        if(!root){
+            vector<int> arr;
+            return arr;
+        }
+        vector<int> lc = dfs(root->left, distance, ans);
+        vector<int> rc = dfs(root->right, distance, ans);
+        if(lc.size() == 0 and rc.size() == 0){
+            vector<int> arr ;
+            arr.push_back(1);
+            return arr;
+        }
+        vector<int> arr ;
+        for(int it: lc){
+            arr.push_back(it+1);
+            for(int jt: rc){
+                if(it+jt <= distance){
+                    ans++;
+                }
+            }
+        }
+        for(int it: rc){
+            arr.push_back(it+1);
+        }
+        return arr;
+    }
+    
+    int countPairs(TreeNode* root, int distance) {
+        int ans = 0;
+        dfs(root, distance, ans);
+        return ans;
+    }
+};
