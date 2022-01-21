@@ -1,0 +1,32 @@
+class Solution {
+public:
+    
+    void dfs(int node, vector<vector<pair<int, int>>>& adj, vector<int>& visited, int time, int maxTime, int val, vector<int> values, int& ans){
+        if(time > maxTime){
+            return ;
+        }
+        if(visited[node] == 0){
+            val += values[node];
+        }
+        visited[node]++;
+        if(node == 0){
+            ans = max(ans, val);
+        }
+        for(auto i: adj[node]){
+            dfs(i.first, adj, visited, time + i.second, maxTime, val, values, ans);
+        }
+        visited[node]--;
+    }
+    
+    int maximalPathQuality(vector<int>& values, vector<vector<int>>& edges, int maxTime) {
+        vector<vector<pair<int, int>>> adj(1002);
+        for(auto i: edges){
+            adj[i[0]].push_back({i[1], i[2]});
+            adj[i[1]].push_back({i[0], i[2]});
+        }
+        vector<int> visited(1002, 0);
+        int ans = 0;
+        dfs(0, adj, visited, 0, maxTime, 0, values, ans);
+        return ans;
+    }
+};
