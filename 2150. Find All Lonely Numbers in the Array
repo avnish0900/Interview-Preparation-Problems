@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> findLonely(vector<int>& nums) {
+        map<int, int> m;
+        set<int> s;
+        for(int i: nums){
+            m[i]++;
+            s.insert(i);
+        }
+        vector<int> ans;
+        for(int i: nums){
+            if(s.find(i-1)==s.end() and s.find(i+1)==s.end() and m[i]==1){
+                ans.push_back(i);
+            }
+        }
+        return ans;
+    }
+};
