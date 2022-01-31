@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int findFinalValue(vector<int>& nums, int original) {
+        set<int> s;
+        for(int i: nums){
+            s.insert(i);
+        }
+        while(true){
+            if(s.find(original) == s.end()){
+                return original;
+            }
+            original <<= 1;
+        }
+        return -1;
+    }
+};
