@@ -1,0 +1,61 @@
+class Solution {
+public:
+    int getHash(string str){
+        int hash = 0;
+        for(char ch: str){
+            int bit = ch - 'a';
+            hash |= ((1 << bit));
+        }
+        return hash;
+    }
+    int dfs(map<int, int>& mask, int hash){
+        if(mask.find(hash) == mask.end()){
+            return 0;
+        }
+        int noGroup = mask[hash];
+        mask.erase(hash);
+        for(int ch = 0; ch < 26; ch++){
+            int newHash;
+            if((hash & ((1 << ch))) == 1){
+                newHash = hash ^ ((1 << ch));
+            }
+            else{
+                newHash = hash | ((1 << ch));
+            }
+            if(mask.find(newHash) != mask.end()){
+                noGroup += dfs(mask, newHash);
+            }
+        }
+        for(int i=0; i<26; i++){
+            if((hash & ((1 << i))) == 0){
+                continue;
+            }
+            int newHash = hash ^ ((1 << i));
+            for(int j=0; j<26; j++){
+                if(j!=i and !((hash>>j)&1)){
+                    int canHash = newHash | ((1 << j));
+                    if(mask.find(canHash) != mask.end()){
+                        noGroup += dfs(mask, canHash);
+                    }
+                }
+            }
+        }
+        return noGroup;
+    }
+    vector<int> groupStrings(vector<string>& words) {
+        map<int, int> masks;
+        for(auto it: words){
+            int hash = getHash(it);
+            ++masks[hash];
+        }
+        int noGroups = 0;
+        int maxGroup = 0;
+        for(auto it: words){
+            int hash = getHash(it);
+            int len = dfs(masks, hash);
+            noGroups += ((len >= 1) ? 1 : 0);
+            maxGroup = max(maxGroup, len);
+        }
+        return {noGroups, maxGroup};
+    }
+};
