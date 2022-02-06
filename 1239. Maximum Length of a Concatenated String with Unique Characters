@@ -1,0 +1,51 @@
+class Solution {
+public:
+    void dfs(int index, vector<string>& arr, int curans, vector<int>& unique, vector<int>& masks, int& ans, int curhash){
+        if(index >= arr.size()){
+            ans = max(ans, curans);
+            return ;
+        }
+        if(unique[index] == 1 and ((curhash & masks[index]) == 0)){
+            string str = arr[index];
+            int len = str.length();
+            curans += len;
+            curhash |= masks[index];
+            dfs(index+1, arr, curans, unique, masks, ans, curhash);
+            curans -= len;
+            curhash ^= masks[index];
+        }
+        dfs(index+1, arr, curans, unique, masks, ans, curhash);
+    }
+    
+    int maxLength(vector<string>& arr) {
+        int n = arr.size();
+        vector<int> unique(n, 0);
+        vector<int> masks(n, 0);
+        for(int i=0; i<n; i++){
+            string str = arr[i];
+            set<int> s;
+            bool can = true;
+            int hash = 0;
+            for(char ch: str){
+                int bit = ch - 'a';
+                hash |= (1 << bit);
+                if(s.find(bit) == s.end()){
+                    s.insert(bit);
+                }
+                else{
+                    can = false;
+                }
+            }
+            masks[i] = hash;
+            if(can){
+                unique[i] = 1;
+            }
+            else{
+                unique[i] = 0;
+            }
+        }
+        int ans = 0;
+        dfs(0, arr, 0, unique, masks, ans, 0);
+        return ans;
+    }
+};
