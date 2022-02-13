@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> odd, even, cnto(100001), cnte(100001);
+        for (int i = 0; i < n; ++i)
+            if (i & 1)
+                odd.push_back(nums[i]); else
+                even.push_back(nums[i]);
+        for (int i : odd) ++cnto[i];
+        int maxo = 0, seco = 0;
+        for (int i = 1; i <= 100000; ++i)
+            if (cnto[i] > cnto[maxo]) {
+                seco = maxo;
+                maxo = i;
+            } else if (cnto[i] > cnto[seco]) seco = i;
+        for (int i : even) ++cnte[i];
+        int maxe = 0, sece = 0;
+        for (int i = 1; i <= 100000; ++i)
+            if (cnte[i] > cnte[maxe]) {
+                sece = maxe;
+                maxe = i;
+            } else if (cnte[i] > cnte[sece]) sece = i;
+        if (maxo != maxe) return n - cnto[maxo] - cnte[maxe];
+        return n - max(cnto[maxo] + cnte[sece], cnto[seco] + cnte[maxe]);
+    }
+};
