@@ -1,0 +1,26 @@
+class Solution {
+public:
+    long long int dfs(vector<int>& arr, long long int mid){
+        long long int ans = 0;
+        for(int i: arr){
+            long long int num = i;
+            long long int val = mid / num;
+            ans += val;
+        }
+        return ans;
+    }
+    long long minimumTime(vector<int>& time, int totalTrips) {
+        long long int low = 1;
+        long long int high = 1e14;
+        while(low < high){
+            long long int mid = low + ((((high - low)) >> 1));
+            if(dfs(time, mid) >= totalTrips){
+                high = mid;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+};
