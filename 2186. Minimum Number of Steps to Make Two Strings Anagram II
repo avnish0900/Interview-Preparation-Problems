@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int minSteps(string s, string t) {;
+        vector<int> sf(27, 0);
+        vector<int> tf(27, 0);
+        for(char ch: s){
+            int bit = ch - 'a';
+            sf[bit]++;
+        }
+        int ans = 0;
+        for(char ch: t){
+            int bit = ch - 'a';
+            tf[bit]++;
+        }
+        for(char i='a'; i<='z'; i++){
+            int bit = i - 'a';
+            ans += abs(tf[bit] - sf[bit]);
+        }
+        return ans;
+    }
+};
