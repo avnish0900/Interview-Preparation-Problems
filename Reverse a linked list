@@ -1,0 +1,23 @@
+void dfs(struct Node* head, struct Node* tail){
+        if(!head){
+            return ;
+        }
+        dfs(head->next, tail);
+        if(head == tail){
+            return ;
+        }
+        else{
+            head->next->next = head;
+        }
+    }
+    struct Node* reverseList(struct Node *head){
+        struct Node* copy = head;
+        struct Node* tail = head;
+        while(tail->next){
+            tail = tail->next;
+        }
+        dfs(head, tail);
+        head->next = NULL;
+        head = tail;
+        return tail;
+    }
