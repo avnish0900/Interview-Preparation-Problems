@@ -1,0 +1,126 @@
+Node* reverse(Node* head){
+        struct Node* newHead = NULL;
+        while(head){
+            struct Node* next = head->next;
+            head->next = newHead;
+            newHead = head;
+            head = next;
+        }
+        return newHead;
+    }
+    struct Node* addTwoLists(struct Node* first, struct Node* second){
+        int ac = 0, bc = 0;
+        Node* temp = first;
+        while(temp){
+            ac++;temp = temp->next;
+        }
+        temp = second;
+        while(temp){
+            bc++;temp = temp->next;
+        }
+        Node* a = reverse(first);
+        Node* b = reverse(second);
+        if(ac >= bc){
+            Node* aa = a;
+            Node* bb = b;
+            int car = 0;
+            bool carry = true;
+            Node* dummy = aa;
+            while(aa and bb){
+                aa->data += bb->data;
+                if(carry){
+                    aa->data += car;
+                    carry = false;
+                    car = 0;
+                }
+                if(aa->data >= 10){
+                    int val = aa->data % 10;
+                    aa->data = val;
+                    car = 1;
+                    carry = true;
+                }
+                dummy = aa;
+                aa = aa->next;
+                bb = bb->next;
+            }
+            if(aa){
+                while(carry and car > 0 and aa){
+                    aa->data += car;
+                    carry = false;
+                    car = 0;
+                    if(aa->data >= 10){
+                        int val = aa->data % 10;
+                        aa->data = val;
+                        car = 1;
+                        carry = true;
+                    }
+                    dummy = aa;
+                    aa = aa->next;
+                }
+                if(carry and car > 0){
+                    Node* neww = new Node(1);
+                    dummy->next = neww;
+                }
+            }
+            else{
+                if(carry and car > 0){
+                    Node* neww = new Node(1);
+                    dummy->next = neww;
+                }
+            }
+            Node* ans = reverse(a);
+            return ans;
+        }
+        else{
+            Node* aa = a;
+            Node* bb = b;
+            int car = 0;
+            bool carry = true;
+            Node* dummy = bb;
+            while(aa and bb){
+                bb->data += aa->data;
+                if(carry){
+                    bb->data += car;
+                    carry = false;
+                    car = 0;
+                }
+                if(bb->data >= 10){
+                    int val = bb->data % 10;
+                    bb->data = val;
+                    car = 1;
+                    carry = true;
+                }
+                dummy = bb;
+                aa = aa->next;
+                bb = bb->next;
+            }
+            if(bb){
+                while(carry and car > 0 and bb){
+                    bb->data += car;
+                    carry = false;
+                    car = 0;
+                    if(bb->data >= 10){
+                        int val = bb->data % 10;
+                        bb->data = val;
+                        car = 1;
+                        carry = true;
+                    }
+                    dummy = bb;
+                    bb = bb->next;
+                }
+                if(carry and car > 0){
+                    Node* neww = new Node(1);
+                    dummy->next = neww;
+                }
+            }
+            else{
+                if(carry and car > 0){
+                    Node* neww = new Node(1);
+                    dummy->next = neww;
+                }
+            }
+            Node* ans = reverse(b);
+            return ans;
+        }
+        return NULL;
+    }
