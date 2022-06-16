@@ -1,0 +1,18 @@
+Node * removeDuplicates( Node *head) {
+        set<int> s;
+        Node* cur = head;
+        Node* prev = new Node(-1);
+        Node* ans = prev;
+        while(cur){
+            if(s.find(cur->data) == s.end()){
+                // cout << "ok\n";
+                prev->next = cur;
+                prev = cur;
+                s.insert(cur->data);
+            }
+            cur = cur->next;
+        }
+        prev->next = NULL;
+        // cout << "end";
+        return ans->next;
+    }
