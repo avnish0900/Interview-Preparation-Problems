@@ -1,0 +1,63 @@
+class Solution {
+public:
+	ListNode* dfs(ListNode* head, ListNode* tail){
+	  ListNode* slow = head; ListNode* fast = head;
+	  while(fast!=tail and fast->next!=tail){
+		  slow = slow->next;
+		  fast = fast->next->next;
+	  }
+	  return slow;
+  }
+  ListNode* merge(ListNode* lcc, ListNode* rcc){
+	  ListNode* lc = lcc;
+	  ListNode* rc = rcc;
+	  ListNode* prev = new ListNode(-1);
+	  ListNode* ans = prev;
+	  while(lc and rc){
+		  if(lc->val <= rc->val){
+			  prev->next = lc;
+			  prev = prev->next;
+			  lc = lc->next;
+		  }
+		  else{
+			  prev->next = rc;
+			  prev = prev->next;
+			  rc = rc->next;
+		  }
+	  }
+	  while(lc){
+		  prev->next = lc;
+		  prev = prev->next;
+		  lc = lc->next;
+	  }
+	  while(rc){
+		  prev->next = rc;
+		  prev = prev->next;
+		  rc = rc->next;
+	  }
+	  prev->next = NULL;
+	  return ans->next;
+  }
+	ListNode* mergesort(ListNode* head, ListNode* tail){
+		if(head == tail){
+			return new ListNode(tail->val);
+		}
+		ListNode* mid = dfs(head, tail);
+		ListNode* lc = mergesort(head, mid);
+		ListNode* rc = mergesort(mid->next, tail);
+		return merge(lc, rc);
+	}
+	ListNode* mergeSort(ListNode* head) {
+		ListNode* tail = head;
+		while(tail->next){
+			tail = tail->next;
+		}
+		return mergesort(head, tail);
+	}
+	ListNode* sortList(ListNode* head) {
+		if(!head){
+			return head;
+		}
+		return mergeSort(head);
+	}
+};
