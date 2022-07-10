@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define int              long long
+#define all(xs)          xs.begin(), xs.end()
+#define rall(xs)         xs.rbegin(), xs.rend()
+#define sz(x)            (int)((x).size())
+#define pb               push_back
+#define ppb              pop_back
+#define pf               push_front
+#define ppf              pop_front
+#define ff               first
+#define ss               second
+#define prec(n)          fixed<<setprecision(n)
+#define debug(x)         cout << (#x) << " is " << (x) << "\n"
+#define debug2(x, y)     cout << #x << "=" << x << "," << #y << "=" << y << "\n"
+#define debug3(x, y,z)   cout << #x << "=" << x << "," << #y << "=" << y << "," << #z << "=" << z << "\n"
+#define debug4(x, y,z,a) cout << #x << "=" << x << "," << #y << "=" << y << "," << #z << "=" << z <<" "<<#a << "=" << a << "\n"
+#define yes              cout<<"YES";
+#define no               cout<<"NO";
+#define ll               cout<<"\n";
+#define INF              2e18
+int gcd(int A,int B){    return (B == 0) ? A : gcd(B, A % B);}
+int lcm(int A,int B){    return A * B / gcd(A, B);}
+// =============================================================================================================================================
+ 
+void dfs(vector<int> adj[], int node, int parent, set<int>& s, vector<int>& color, vector<int>& ans){
+    set<int> cur;
+    cur.insert(color[node]);
+    for(auto it: adj[node]){
+        if(it == parent){
+            continue;
+        }
+        dfs(adj, it, node, s, color, ans);
+        if(s.size() > cur.size()){
+            swap(s, cur);
+        }
+        for(auto it: s){
+            cur.insert(it);
+        }
+    }
+    ans[node] = cur.size();
+    s.swap(cur);
+    return ;
+}
+ 
+void solve(){
+    int n; cin >> n;
+    vector<int> color(n+3);
+    for(int i = 1; i <= n; i++){
+        cin >> color[i];
+    }
+    vector<int> adj[n+1];
+    for(int i = 1; i < n; i++){
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<int> ans(n+2, 0);
+    set<int> s;
+    dfs(adj, 1, -1, s, color, ans);
+    for(int i = 1; i <= n; i++){
+        cout << ans[i] << " ";
+    }
+    return ;
+}
+ 
+signed main(){
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
+    ios_base::sync_with_stdio(false), cin.tie(NULL);
+    int t=1; 
+    // cin>>t;
+    for(int i=0;i<t;i++){
+        // cout<<"Case #"<<i+1<<": "; 
+       solve();
+    }
+}
