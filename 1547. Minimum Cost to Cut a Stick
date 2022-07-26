@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int dfs(int start, int end, vector<int>& cuts, int i, int j, vector<vector<int>>& dp){
+        if(i > j) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        int cost = INT_MAX;
+        for(int k = i; k <= j; k++){
+            int left = dfs(start, cuts[k], cuts, i, k-1, dp);
+            int right = dfs(cuts[k], end, cuts, k+1, j, dp);
+            int c = left + right + (end - start);
+            cost = min(cost, c);
+        }
+        return dp[i][j] = cost;
+    }
+    int minCost(int n, vector<int>& cuts) {
+        vector<vector<int>> dp(101, vector<int>(101, -1));
+        sort(cuts.begin(), cuts.end());
+        return dfs(0, n, cuts, 0, cuts.size() - 1, dp);
+    }
+};
