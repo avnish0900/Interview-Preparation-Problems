@@ -1,0 +1,17 @@
+class Solution{
+  public:
+    Node* deleteNode(Node* root, int k){
+        if(!root) return root;
+        Node* lc = deleteNode(root->left, k);
+        Node* rc = deleteNode(root->right, k);
+        if(root and root->data < k){
+            root->left = lc;
+            root->right = rc;
+            return root;
+        }
+        else{
+            return lc;
+        }
+        return NULL;
+    }
+};
