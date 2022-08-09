@@ -1,0 +1,30 @@
+class bp{
+    public:
+    int child;
+    int sum;
+};
+class Solution {
+public:
+    bp dfs(TreeNode* root, int& ans){
+        if(!root){
+            bp mc;
+            mc.child = 0;
+            mc.sum = 0;
+            return mc;
+        }
+        bp lc = dfs(root->left, ans);
+        bp rc = dfs(root->right, ans);
+        bp mc;
+        mc.child = lc.child + rc.child + 1;
+        mc.sum = lc.sum + rc.sum + (root ? root->val : 0);
+        if(root and mc.child and root->val == ((mc.sum / mc.child))){
+            ans ++;
+        }
+        return mc;
+    }
+    int averageOfSubtree(TreeNode* root) {
+        int ans = 0;
+        dfs(root, ans);
+        return ans;
+    }
+};
