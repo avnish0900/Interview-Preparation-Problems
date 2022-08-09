@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int dfs(TreeNode* root, long long int target){
+        if(!root){
+            return 0;
+        }
+        int mc = 0;
+        target -= root->val;
+        if(target == 0){
+            mc += 1;
+        }
+        int lc = dfs(root->left, target);
+        int rc = dfs(root->right, target);
+        return (lc +  mc + rc);
+    }
+    int pathSum(TreeNode* root, int targetSum) {
+        if(!root){
+            return 0;
+        }
+        int mc = dfs(root, targetSum);
+        int lc = pathSum(root->left, (long long int)targetSum);
+        int rc = pathSum(root->right, (long long int)targetSum);
+        return (lc + mc + rc);
+    }
+};
