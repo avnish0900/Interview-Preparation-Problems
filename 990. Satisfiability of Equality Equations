@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int findPar(int node, vector<int>& par){
+        if(par[node] == node){
+            return node;
+        }
+        return par[node] = findPar(par[node], par);
+    }
+    void dsu(int u, int v, vector<int>& par, vector<int>& rank){
+        u = findPar(u, par);
+        v = findPar(v, par);
+        if(u != v){
+            if(rank[u] < rank[v]){
+                swap(u, v);
+            }
+            par[v] = u;
+            if(rank[u] == rank[v]){
+                rank[u]++;
+            }
+        }
+        return ;
+    }
+    bool equationsPossible(vector<string>& arr) {
+        vector<int> par(27);
+        vector<int> rank(27, 0);
+        for(char ch = 'a'; ch <='z'; ch++){
+            par[ch - 'a'] = ch - 'a';
+        }
+        for(auto it: arr){
+            if(it[1] == '='){
+                dsu(it[0] - 'a', it[3] - 'a', par, rank);
+            }
+        }
+        for(auto it: arr){
+            if(it[1] == '!'){
+                int u = findPar(it[0] - 'a', par);
+                int v = findPar(it[3] - 'a', par);
+                if(u == v){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
