@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<string> findAllRecipes(vector<string>& rec, vector<vector<string>>& ing, vector<string>& sup) {
+        unordered_set<string> s;
+        for(auto it: sup) s.insert(it);
+        queue<int> q; int n = rec.size();
+        for(int i=0; i<n; i++) q.push(i);
+        bool made[n]; memset(made, false, sizeof made);
+        bool loop = true;
+        while(loop){
+            loop = false;
+            queue<int> dup;
+            while(!q.empty()){
+                int top = q.front(); q.pop();
+                bool f = true;
+                for(int i = 0; i < ing[top].size(); i++){
+                    if(s.find(ing[top][i]) == s.end()){
+                        f = false;
+                        break;
+                    }
+                }
+                if(f == true){
+                    s.insert(rec[top]);
+                    made[top] = true;
+                    loop = true;
+                }
+                else{
+                    dup.push(top);
+                }
+            }
+            q = dup;
+        }
+        vector<string> ans;
+        for(int i = 0; i < n; i++){
+            if(made[i] == true){
+                ans.push_back(rec[i]);
+            }
+        }
+        return ans;
+    }
+};
