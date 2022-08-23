@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int findParent(int node, vector<int>& parent){
+        if(parent[node] == node){
+            return node;
+        }
+        return parent[node] = findParent(parent[node], parent);
+    }
+    bool dsu(int u, int v, vector<int>& rank, vector<int>& parent){
+        u = findParent(u, parent);
+        v = findParent(v, parent);
+        if(u == v){
+            return true;
+        }
+        if(rank[u] < rank[v]){
+            swap(u, v);
+        }
+        parent[v] = u;
+        if(rank[u] == rank[v]){
+            rank[u]++;
+        }
+        return false;
+    }
+    
+    vector<int> findRedundantDirectedConnection(vector<vector<int>>& adj) {
+        int n = adj.size();
+        int bkl1 = -1, bkl2 = -1;
+        vector<int> ind(n+1, -1);
+        for(int i = 0; i < n; i++){
+            int u = adj[i][0];
+            int v = adj[i][1];
+            if(ind[v] == -1){
+                ind[v] = i;
+            }
+            else{
+                bkl1 = i;
+                bkl2 = ind[v];
+            }
+        }
+        vector<int> rank(n+1);
+        vector<int> parent(n+1);
+        for(int i = 1; i <= n; i++){
+            parent[i] = i;
+            rank[i] = 0;
+        }
+        
+        for(int i = 0; i < n; i++){
+            if(i == bkl1){
+                continue;
+            }
+            int u = adj[i][0];
+            int v = adj[i][1];
+            bool cycle = dsu(u, v, rank, parent);
+            if(cycle){
+                if(bkl1 == -1){
+                    return {adj[i][0], adj[i][1]};
+                }
+                else{
+                    return {adj[bkl2][0], adj[bkl2][1]};
+                }
+            }
+        }
+        return {adj[bkl1][0], adj[bkl1][1]};
+    }
+};
