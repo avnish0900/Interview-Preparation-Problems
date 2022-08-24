@@ -1,0 +1,24 @@
+class Solution {
+public:
+    long long maximumImportance(int n, vector<vector<int>>& roads) {
+        long long ans = 0;
+        long long ind[n]; memset(ind, 0, sizeof ind);
+        for(auto it: roads){
+            ind[it[0]]++; ind[it[1]]++;
+        }
+        vector<pair<int, int>> arr;
+        long long val = n;
+        for(int i = 0 ; i < n; i++){
+            arr.push_back({ind[i], i});
+        }
+        sort(arr.begin(), arr.end());
+        map<long long, long long> m;
+        for(int i = n - 1; i >= 0; i--){
+            m[arr[i].second] = val--;
+        }
+        for(auto it: roads){
+            ans += (m[it[0]] + m[it[1]]);
+        }
+        return ans;
+    }
+};
