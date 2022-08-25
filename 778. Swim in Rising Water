@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int findParent(int node, vector<int>& parent){
+        return (parent[node] != node ? (parent[node] = findParent(parent[node], parent)) : node);
+    }
+    void dsu(int u, int v, vector<int>& rank, vector<int>& parent){
+        u = findParent(u, parent);
+        v = findParent(v, parent);
+        if(u != v){
+            if(rank[u] < rank[v]){
+                swap(u, v);
+            }
+            parent[v] = u;
+            if(rank[u] == rank[v]){
+                rank[u]++;
+            }
+        }
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+		int totalTime = n * n;
+		vector<int> time(totalTime);
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < n; j++){
+				int id = i * n + j;
+				time[grid[i][j]] = id;
+			}
+		}
+        vector<int> rank(totalTime);
+        vector<int> parent(totalTime);
+		for(int i=0; i<totalTime; i++){
+            rank[i] = 0;
+            parent[i] = i;
+        }
+		int start = grid[0][0];
+		int end = grid[n-1][n-1];
+		for(int curTime = 0; curTime < totalTime; curTime++){
+			int id = time[curTime];
+			int row = id / n;
+			int col = id - row * n;
+			if(row - 1 >= 0 && grid[row-1][col] < curTime) dsu(curTime, grid[row-1][col], rank, parent);
+			if(row + 1 < n && grid[row+1][col] < curTime) dsu(curTime, grid[row+1][col], rank, parent);
+			if(col - 1 >= 0 && grid[row][col - 1] < curTime) dsu(curTime, grid[row][col-1], rank, parent);
+			if(col + 1 < n && grid[row][col + 1] < curTime) dsu(curTime, grid[row][col+1], rank, parent);
+			if(curTime >= end && findParent(start, parent) == findParent(end, parent)) return curTime;
+		}
+		return -1;
+    }
+};
