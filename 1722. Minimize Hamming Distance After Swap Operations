@@ -1,0 +1,54 @@
+class Solution {
+public:
+    int findParent(int node, vector<int>& parent){
+        if(parent[node] == node){
+            return node;
+        }
+        return parent[node] = findParent(parent[node], parent);
+    }
+    void dsu(int u, int v, vector<int>& rank, vector<int>& parent){
+        u = findParent(u, parent);
+        v = findParent(v, parent);
+        if(u != v){
+            if(rank[u] < rank[v]){
+                swap(u, v);
+            }
+            parent[v] = u;
+            if(rank[u] == rank[v]){
+                rank[u]++;
+            }
+        }
+        return ;
+    }
+    int minimumHammingDistance(vector<int>& source, vector<int>& target, vector<vector<int>>& arr) {
+        int n = source.size();
+        vector<int> rank(n+1, 0);
+        vector<int> parent(n+1);
+        for(int i = 0; i < n; i++){
+            parent[i] = i;
+        }
+        for(auto it: arr){
+            dsu(it[0], it[1], rank, parent);
+        }
+        map<int, map<int, int>> m;
+        for(int i = 0; i < n; i++){
+            int root = findParent(i, parent);
+            int num = source[i];
+            m[root][num] ++;
+        }
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            int root = findParent(i, parent);
+            int num = target[i];
+            if(m.find(root) == m.end()){
+                ans++;
+                continue;
+            }
+            if(m[root][num] <= 0){
+                ans++;
+            }
+            m[root][num]--;
+        }
+        return ans;
+    }
+};
