@@ -1,0 +1,65 @@
+class Solution {
+public:
+    bool valid(int i, int j, vector<vector<int>>& arr){
+        if(i < 0 or i >= arr.size() or j < 0 or j >= arr[0].size()){
+            return false;
+        }
+        return true;
+    }
+    void dfs(int i, int j, vector<vector<int>>& arr, int id, int& count){
+        if(i < 0 or i >= arr.size() or j < 0 or j >= arr[0].size() or arr[i][j] != 1 ){
+            return ;
+        }
+        arr[i][j] = id;
+        dfs(i - 1, j, arr, id, count);
+        dfs(i + 1, j, arr, id, count);
+        dfs(i, j - 1, arr, id, count);
+        dfs(i, j + 1, arr, id, count);
+        count++;
+    }
+    int largestIsland(vector<vector<int>>& arr) {
+        int n = arr.size(), m = arr[0].size();
+        int ans = INT_MIN;
+        int id = 2;
+        map<int, int> mp;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(arr[i][j] == 1){
+                    int count = 0;
+                    dfs(i, j, arr, id, count);
+                    mp[id++] = count;
+                }
+            }
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(arr[i][j] == 0){
+                    int sum = 0;
+                    set<int> vis;
+                    if(valid(i - 1, j, arr) and arr[i - 1][j] > 0 and 
+                        vis.find(arr[i-1][j]) == vis.end()){
+                        vis.insert(arr[i - 1][j]);
+                        sum += mp[arr[i - 1][j]];
+                    }
+                    if(valid(i + 1, j, arr) and arr[i + 1][j] > 0 and 
+                        vis.find(arr[i+1][j]) == vis.end()){
+                        vis.insert(arr[i + 1][j]);
+                        sum += mp[arr[i + 1][j]];
+                    }
+                    if(valid(i, j + 1, arr) and arr[i][j + 1] > 0 and 
+                        vis.find(arr[i][j + 1]) == vis.end()){
+                        vis.insert(arr[i][j + 1]);
+                        sum += mp[arr[i][j + 1]];
+                    }
+                    if(valid(i, j - 1, arr) and arr[i][j - 1] > 0 and 
+                        vis.find(arr[i][j - 1]) == vis.end()){
+                        vis.insert(arr[i][j - 1]);
+                        sum += mp[arr[i][j - 1]];
+                    }
+                    ans = max(ans, sum + 1);
+                }
+            }
+        }
+        return (ans == INT_MIN ? (arr.size() * arr[0].size()) : ans);
+    }
+};
