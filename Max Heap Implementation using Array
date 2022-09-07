@@ -1,0 +1,95 @@
+#include<bits/stdc++.h>
+using namespace std;
+int maxSize = 20;
+int heap[20];
+int heapSize;
+
+void heapPush(int val){
+    if(heapSize >= maxSize){
+        cout << "Heap is OverFlown\n";
+        return ;
+    }
+    heap[heapSize] = val;
+    int cur = heapSize;
+    while(cur > 0 and heap[cur] > heap[(cur - 1) / 2]){
+        int temp = heap[cur];
+        heap[cur] = heap[(cur - 1) / 2];
+        heap[(cur - 1) / 2] = temp;
+        
+        cur = (cur - 1) / 2;
+    }
+    heapSize++;
+    return;
+}
+
+int heapPop(){
+    if(heapSize <= 0){
+        cout << "Heap is UnderFlown ";
+        return -1;
+    }
+    int cur = 0;
+    int poped = heap[cur];
+    heap[cur] = heap[heapSize - 1];
+    heapSize--;
+    while((2*cur + 1) < heapSize){
+        int child;
+        if((2*cur + 2) == heapSize){
+            child = 2*cur + 1;
+        }
+        else{
+            child = ((heap[(2*cur) + 1] > heap[(2*cur) + 2])  ? 2*cur + 1  : 2*cur + 2);
+        }
+        if(heap[cur] < heap[child]){
+            swap(heap[cur], heap[child]);
+            cur = child;
+        }
+        else{
+            break;
+        }
+        
+    }
+    return poped;
+}
+
+void heapDisplay(){
+    for(int i = 0; i < heapSize; i++){
+        cout << heap[i] << " ";
+    }
+    cout << endl;
+    return ;
+}
+
+void init(){
+    heapSize = 0;
+}
+
+int main(){
+    init();
+    int option;
+    int element;
+    while(true){
+        cout << "1 - push\n";
+        cout << "2 - pop\n";
+        cout << "3 - display\n";
+        cout << "4 - end\n";
+        cin >> option;
+        switch(option){
+            case 1:
+                cin >> element;
+                heapPush(element);
+                break;
+                
+            case 2:
+                cout << heapPop() << endl;;
+                break;
+                
+            case 3:
+                heapDisplay();
+                break;
+                
+            default:
+                return 0;
+        }
+    }
+    return 0;
+}
