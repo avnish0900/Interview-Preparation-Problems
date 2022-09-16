@@ -1,0 +1,113 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool full(int n, int k, vector<int>& top, vector<int>& arr, vector<int>& next, int& stack, int& element, int& space){
+    if(space == -1){
+        return true;
+    }
+    return false;
+}
+
+bool empty(int n, int k, vector<int>& top, vector<int>& arr, vector<int>& next, int& stack, int& space){
+    if(top[stack] == -1){
+        return true;
+    }
+    return false;
+}
+
+void push(int n, int k, vector<int>& top, vector<int>& arr, vector<int>& next, int stack, int element, int& space){
+    if(full(n, k, top, arr, next, stack, element,space)){
+        cout << "Stack is OverFLow\n";
+        return ;
+    }
+    int i = space;
+    space = next[i];
+    next[i] = top[stack];
+    top[stack] = i;
+    arr[i] = element;
+    cout << "Pushed Successfully\n";
+    return ;
+}
+
+int pop(int n, int k, vector<int>& top, vector<int>& arr, vector<int>& next, int stack, int& space){
+    if(empty(n, k, top, arr, next, stack, space)){
+        cout << "Stack is UnderFlow";
+        return -1;
+    }
+    int i = top[stack];
+    top[stack] = next[i];
+    next[i] = space;
+    space = i;
+    return arr[i];
+}
+
+void display(int n, int k, vector<int>& top, vector<int>& arr, vector<int>& next, int stack, int& space){
+    if(empty(n, k, top, arr, next, stack, space)){
+        cout << "Stack is UnderFlow";
+    }
+    int pos;
+    int prev = top[stack];
+    while(prev != -1){
+        pos = prev;
+        cout << arr[pos] << " ";
+        prev = next[pos];
+    }
+    cout << endl;
+}
+
+int main(){
+    int n, k;
+    cin >> n >> k;
+    vector<int> top(k, -1);
+    vector<int> arr(n, -1);
+    vector<int> next(n);
+    int space = 0;
+    for(int i = 0 ; i < n; i++){
+        next[i] = i + 1;
+    }
+    next[n - 1] = -1;
+    int element, stack;
+    while(true){
+        cout << "1 - Push\n";
+        cout << "2 - Pop\n";
+        cout << "3 - Display\n";
+        cout << "4 - Exit\n";
+        int choice; cin >> choice;
+        switch(choice){
+            case 1:
+                cout << "Enter the Stack No.\n";
+                cin >> stack;
+                stack --;
+                cout << "Enter the Element\n";
+                cin >> element;
+                push(n, k, top, arr, next, stack, element, space);
+                break;
+                
+            case 2:
+                cout << "Enter the Stack No.\n";
+                cin >> stack;
+                stack--;
+                element = pop(n, k, top, arr, next, stack, space);
+                if(element == -1){
+                    cout << element << "\n";
+                }
+                else{
+                    cout << "Poped Element : " << element << "\n";
+                }
+                break;
+                
+                
+            case 3:
+                cout << "Enter the Stack No.\n";
+                cin >> stack;
+                stack--;
+                cout << "Elements are : ";
+                display(n, k, top, arr, next, stack, space);
+                break;
+                
+            default:
+                return 0;
+        }
+    }
+    return 0;
+}
